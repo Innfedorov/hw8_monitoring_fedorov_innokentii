@@ -1,0 +1,11 @@
+groups:
+  - name: latency_alerts
+    rules:
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, sum(rate(request_processing_seconds_bucket[5m])) by (le)) > 0.5
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High latency detected"
+          description: "p95 latency is above 0.5s for 1 minute"
